@@ -18,9 +18,9 @@ public class ShipmentManegment {
 
 
 
-    Shipment shipment;
+      Shipment shipment;
 
-    /// ///////////////////////////////////////////////////////////// ///
+    /// /////////////////////////////////////////////////////////////// ///
 
     public void addShipment(int ID, String destination, float cost, String deliveryDate)
     {
