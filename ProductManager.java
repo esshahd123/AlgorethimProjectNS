@@ -25,11 +25,13 @@ public class ProductManager {
 
     public void addAProduct(int ID,String name,float price, int quantity)
     {
-        containerCapacity+=quantity;
-        if(containerCapacity>1000 && price<0)
+      int bell= containerCapacity+quantity;
+        if(bell>1000 || price<0)
         {
             System.out.println("over full container or Inavilable price !!!!");
+            return ;
         }
+        containerCapacity=bell;
         product=innerAddingProduct(product,ID,name,price,quantity);
     }
     private Product innerAddingProduct(Product p,int ID,String name,float price, int quantity)
@@ -58,11 +60,13 @@ public class ProductManager {
 
     public void balanceAdding(int ID,String name,float price, int quantity)
     {
-        containerCapacity+=quantity;
-        if(containerCapacity>1000 && price<0)
+        int bell=containerCapacity+quantity;
+        if(bell>1000 || price<0)
         {
             System.out.println("over full container or Inavilable price !!!!");
+            return;
         }
+        containerCapacity=bell;
         product=innerBalanceAdding(product,ID,name,price,quantity);
     }
     private Product leftRotation(Product p)
@@ -148,6 +152,13 @@ public class ProductManager {
 
     public void delateProduct(int id)
     {
+        int bell=containerCapacity-innerSearching(product,id).quantity;
+        if(bell<0)
+        {
+            System.out.println("No such quantity yo delete!!!!");
+            return ;
+        }
+        containerCapacity=bell;
         product=innerDelation(product,id);
     }
     private Product findTheNextID(Product p)
