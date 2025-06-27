@@ -19,6 +19,7 @@ public class ProductManager {
         }
     }
 
+
     Product product;
     static int containerCapacity;
 
