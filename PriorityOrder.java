@@ -1,5 +1,5 @@
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 
 public class PriorityOrder {
     public class Order{
@@ -17,13 +17,15 @@ public class PriorityOrder {
 
     }
 
-
-
     ArrayList <Order>orders=new ArrayList<>();
 /// ////////////////////////////////////////////////////////////////////////// ///
 
     public void addOrder(Order order)
     {
+        if (order.priority < 1 || order.priority > 10) {
+            System.out.println("Invalid priority! Please make it between 1 and 10.");
+            return;
+        }
         orders.add(order);
         Heapify_Up(orders.size()-1);
 
@@ -50,6 +52,11 @@ public class PriorityOrder {
 
     public void updatePriority(int orderID, int newPriority)
     {
+        if (newPriority < 1 || newPriority > 10) {
+            System.out.println("Invalid new priority! Please make it between 1 and 10.");
+            return;
+        }
+
         for(int i = 0; i<orders.size(); i++){
             if(orders.get(i).orderID==orderID)
             {
@@ -60,7 +67,7 @@ public class PriorityOrder {
                     Heapify_Up(i);
                 else
                     Heapify_Down(i);
-            return;
+                return;
             }
         }
         System.out.println("Order ID " + orderID + " not found.");
@@ -90,8 +97,8 @@ public class PriorityOrder {
             int mindex=(index-1)/2;
             if(orders.get(index).priority>orders.get(mindex).priority)
             {
-             swap(index,mindex);
-             index=mindex;
+                swap(index,mindex);
+                index=mindex;
             }
             else
                 break;
@@ -124,5 +131,13 @@ public class PriorityOrder {
         Order temp=orders.get(index);
         orders.set(index,orders.get(midindex));
         orders.set(midindex,temp);
+    }
+
+    public int totalPriorityLoad() {
+        int total = 0;
+        for (Order order:orders)
+            total+=order.priority;
+        return total;
+
     }
 }

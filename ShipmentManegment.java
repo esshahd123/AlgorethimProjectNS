@@ -1,3 +1,6 @@
+
+import java.time.LocalDate;
+
 public class ShipmentManegment {
     public class Shipment{
         int shipmentID;
@@ -15,15 +18,21 @@ public class ShipmentManegment {
         }
     }
 
-
-
-
-      Shipment shipment;
+    Shipment shipment;
 
     /// /////////////////////////////////////////////////////////////// ///
 
     public void addShipment(int ID, String destination, float cost, String deliveryDate)
     {
+        LocalDate delivery = LocalDate.parse(deliveryDate);
+        if (delivery.isBefore(LocalDate.now())) {
+            System.out.println("Invalid delivery date! Cannot be in the past.");
+            return;
+        }
+        if(cost<=0 || cost>1000000){
+            System.out.println("invalide cost ! Please make it between 0 and 1000000.");
+            return;
+        }
         shipment = innerAddShipment(shipment, ID, destination, cost, deliveryDate);
     }
 
@@ -74,9 +83,14 @@ public class ShipmentManegment {
 
     public void updateShipmentDate(int ID,String upDate)
     {
+        LocalDate newDate  = LocalDate.parse(upDate);
+        if (newDate.isBefore(LocalDate.now())) {
+            System.out.println("Invalid delivery date! Cannot be in the past.");
+            return;
+        }
         Shipment s=Inner_search(shipment,ID);
         if(s!=null)
-             s.deliveryDate=upDate;
+            s.deliveryDate=upDate;
         else
             System.out.println("No such ID like "+ID+" !!!!");
     }
@@ -91,11 +105,24 @@ public class ShipmentManegment {
         if (shipment != null) {
             inOrderPrint(shipment.left);
             System.out.println("Shipment ID: " + shipment.shipmentID +'\n'+ "Destination: " + shipment.destination
-                  +'\n'  + "Cost: " + shipment.cost +'\n'+ "Delivery Date: " + shipment.deliveryDate);
+                    +'\n'  + "Cost: " + shipment.cost +'\n'+ "Delivery Date: " + shipment.deliveryDate);
             inOrderPrint(shipment.right);
         }
     }
 
+    public void printHighCostShipments(float threshold) {
+        System.out.println("Shipments with cost higher than " + threshold + ":");
+        recursiveHighCost(shipment, threshold);
+    }
 
+    private void recursiveHighCost(Shipment s, float threshold) {
+        if (s == null) return;
+        recursiveHighCost(s.left, threshold);
+        if (s.cost > threshold) {
+            System.out.println("ID: " + s.shipmentID + ", Cost: " + s.cost + ", Destination: " + s.destination);
+        }
+        recursiveHighCost(s.right, threshold);
+    }
 
 }
+

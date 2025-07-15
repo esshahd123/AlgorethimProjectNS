@@ -25,12 +25,18 @@ public class ProductManager {
 
     public void addAProduct(int ID,String name,float price, int quantity)
     {
-      int bell= containerCapacity+quantity;
-        if(bell>1000 || price<0)
+        int bell= containerCapacity+quantity;
+
+        if(price <= 0 || price > 10000)
         {
-            System.out.println("over full container or Inavilable price !!!!");
-            return ;
+            System.out.println("Invalid price! Please make it between 0 and 1000000.");
+            return;
         }
+        if(quantity < 0 || quantity > 1000 || (bell > 1000)) {
+            System.out.println("Invalid quantity! Exceeds warehouse capacity.");
+            return;
+        }
+
         containerCapacity=bell;
         product=innerAddingProduct(product,ID,name,price,quantity);
     }
@@ -142,10 +148,29 @@ public class ProductManager {
     public void UpdateDetails(int id,float newUpdate,char typeOfChange)
     {
         Product p=innerSearching(product,id);
+        if (p == null) {
+            System.out.println("Product not found.");
+            return;
+        }
         if(typeOfChange=='p'|| typeOfChange=='P')
+        {
+            if (newUpdate <= 0 || newUpdate > 1000000) {
+                System.out.println("Invalid new price! Please make it between 0 and 1000000.");
+                return;
+            }
             p.price=newUpdate;
+            System.out.println("Price updated successfully.");
+        }
         else if(typeOfChange=='q'||typeOfChange=='Q')
+        {
+            if (newUpdate < 0 || newUpdate > 1000 || (containerCapacity - p.quantity + newUpdate) > 1000) {
+                System.out.println("Invalid new quantity!");
+                return;
+            }
+            containerCapacity = containerCapacity - p.quantity + (int)newUpdate;
             p.quantity=(int)newUpdate;
+            System.out.println("Quantity updated successfully.");
+        }
         else
             System.out.println("No such operation !!!");
     }
@@ -204,6 +229,15 @@ public class ProductManager {
             innerPrintProduct(p.left);
             innerPrintProduct(p.right);
         }
+    }
+
+    public float calculateInventoryValue() {
+        return calculateInventory(product);
+    }
+
+    private float calculateInventory(Product p) {
+        if (p == null) return 0;
+        return (p.price * p.quantity) + calculateInventory(p.left) + calculateInventory(p.right);
     }
 
 }
