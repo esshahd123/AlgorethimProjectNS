@@ -1,5 +1,6 @@
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class ShipmentManegment {
     public class Shipment{
@@ -19,6 +20,7 @@ public class ShipmentManegment {
     }
 
     Shipment shipment;
+    static ArrayList<Shipment> shipments=new ArrayList<>();
 
     /// /////////////////////////////////////////////////////////////// ///
 
@@ -34,6 +36,7 @@ public class ShipmentManegment {
             return;
         }
         shipment = innerAddShipment(shipment, ID, destination, cost, deliveryDate);
+        shipments.add(shipment);
     }
 
     private Shipment innerAddShipment(Shipment node, int ID, String destination, float cost, String deliveryDate)

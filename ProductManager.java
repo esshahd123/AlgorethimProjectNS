@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public class ProductManager {
     public class Product {
@@ -19,6 +20,7 @@ public class ProductManager {
         }
     }
 
+    static ArrayList<Product> productManagers=new ArrayList<>();
 
     Product product;
     static int containerCapacity;
@@ -27,7 +29,7 @@ public class ProductManager {
     {
         int bell= containerCapacity+quantity;
 
-        if(price <= 0 || price > 10000)
+        if(price <= 0 || price > 10000 )
         {
             System.out.println("Invalid price! Please make it between 0 and 1000000.");
             return;
@@ -39,6 +41,7 @@ public class ProductManager {
 
         containerCapacity=bell;
         product=innerAddingProduct(product,ID,name,price,quantity);
+        productManagers.add(product);
     }
     private Product innerAddingProduct(Product p,int ID,String name,float price, int quantity)
     {
@@ -225,7 +228,7 @@ public class ProductManager {
         if(p==null) return ;
         else
         {
-            System.out.println(p.name+"  "+p.price+"  "+p.quantity+"  "+p.ID);
+            System.out.println("product name: "+p.name+" , "+" price: "+p.price+" , "+" quantity: "+p.quantity+" , "+" ID: "+p.ID);
             innerPrintProduct(p.left);
             innerPrintProduct(p.right);
         }

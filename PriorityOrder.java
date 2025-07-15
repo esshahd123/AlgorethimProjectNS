@@ -17,7 +17,7 @@ public class PriorityOrder {
 
     }
 
-    ArrayList <Order>orders=new ArrayList<>();
+    static ArrayList <Order>orders=new ArrayList<>();
 /// ////////////////////////////////////////////////////////////////////////// ///
 
     public void addOrder(Order order)
