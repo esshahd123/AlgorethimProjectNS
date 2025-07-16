@@ -1,9 +1,20 @@
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ShipmentManegment {
-    public class Shipment{
+
+    private Shipment newNodeCreated = null;
+    static ArrayList<Shipment> shipments = new ArrayList<>();
+    public ShipmentManegment() {
+
+        addShipment(1111, "damas", 2300, "2\\9\\2025");
+        addShipment(1114, "Aleppo", 1250, "2\\10\\2025");
+        addShipment(1112, "Hama", 3000, "3\\8\\2025");
+    }
+    public static class Shipment{
         int shipmentID;
         String destination;
         float cost;
@@ -11,6 +22,10 @@ public class ShipmentManegment {
         Shipment left;
         Shipment right;
 
+
+        Shipment(){
+
+        }
         public Shipment(int shipmentID, String destination, float cost, String deliveryDate) {
             this.shipmentID = shipmentID;
             this.destination = destination;
@@ -20,13 +35,13 @@ public class ShipmentManegment {
     }
 
     Shipment shipment;
-    static ArrayList<Shipment> shipments=new ArrayList<>();
 
     /// /////////////////////////////////////////////////////////////// ///
 
     public void addShipment(int ID, String destination, float cost, String deliveryDate)
     {
-        LocalDate delivery = LocalDate.parse(deliveryDate);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d\\M\\yyyy");
+        LocalDate delivery = LocalDate.parse(deliveryDate,formatter);
         if (delivery.isBefore(LocalDate.now())) {
             System.out.println("Invalid delivery date! Cannot be in the past.");
             return;
@@ -35,14 +50,21 @@ public class ShipmentManegment {
             System.out.println("invalide cost ! Please make it between 0 and 1000000.");
             return;
         }
+
+
+        newNodeCreated = null;
         shipment = innerAddShipment(shipment, ID, destination, cost, deliveryDate);
-        shipments.add(shipment);
+
+
+        if (newNodeCreated != null)
+            shipments.add(newNodeCreated);
     }
 
     private Shipment innerAddShipment(Shipment node, int ID, String destination, float cost, String deliveryDate)
     {
         if (node == null) {
-            return new Shipment(ID, destination, cost, deliveryDate);
+            newNodeCreated = new Shipment(ID, destination, cost, deliveryDate);
+            return newNodeCreated;
         }
         if (ID < node.shipmentID) {
             node.left = innerAddShipment(node.left, ID, destination, cost, deliveryDate);
@@ -53,6 +75,7 @@ public class ShipmentManegment {
         }
         return node;
     }
+
 
     public void Shipment_search(int ID)
     {
@@ -84,9 +107,16 @@ public class ShipmentManegment {
 
     }
 
+
+
     public void updateShipmentDate(int ID,String upDate)
     {
-        LocalDate newDate  = LocalDate.parse(upDate);
+
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d\\M\\yyyy");
+
+
+        LocalDate newDate  = LocalDate.parse(upDate,formatter);
         if (newDate.isBefore(LocalDate.now())) {
             System.out.println("Invalid delivery date! Cannot be in the past.");
             return;
@@ -110,6 +140,7 @@ public class ShipmentManegment {
             System.out.println("Shipment ID: " + shipment.shipmentID +'\n'+ "Destination: " + shipment.destination
                     +'\n'  + "Cost: " + shipment.cost +'\n'+ "Delivery Date: " + shipment.deliveryDate);
             inOrderPrint(shipment.right);
+            System.out.println("___________________________________________");
         }
     }
 

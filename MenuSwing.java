@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class MenuSwing {
     MenuSwing(){
@@ -71,7 +73,7 @@ public class MenuSwing {
 
             String[] columnNames = {"ID", "Destination", "Cost", "DeliveryDate"};
             Object[][] data = new Object[ShipmentManegment.shipments.size()][4];
-
+            Collections.sort(ShipmentManegment.shipments, Comparator.comparingInt(s -> s.shipmentID));
             for (int i = 0; i < ShipmentManegment.shipments.size(); i++) {
                 ShipmentManegment.Shipment shipment = ShipmentManegment.shipments.get(i);
                 data[i][0] = shipment.shipmentID;
@@ -94,6 +96,7 @@ public class MenuSwing {
             String[] columnNames = {"ID", "Order Priority"};
             Object[][] data = new Object[PriorityOrder.orders.size()][4];
 
+            Collections.sort(PriorityOrder.orders,  Comparator.comparingInt(s -> s.priority));
             for (int i = 0; i < PriorityOrder.orders.size(); i++) {
                 PriorityOrder.Order order = PriorityOrder.orders.get(i);
                 data[i][0] = order.orderID;

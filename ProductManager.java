@@ -1,7 +1,20 @@
 import java.util.ArrayList;
 
 public class ProductManager {
-    public class Product {
+
+    static ArrayList<Product> productManagers=new ArrayList<>();
+    private Product newProductCreated = null;
+    Product product;
+    static int containerCapacity;
+    ProductManager(){
+        addAProduct(9,"milk",76,33);
+        addAProduct(8,"orange",55,44);
+        addAProduct(7,"chair",788,36);
+        addAProduct(10,"bread",33,27);
+        addAProduct(11,"table",900,75);
+    }
+
+    public static class Product {
         int ID;
         String name;
         float price;
@@ -9,6 +22,9 @@ public class ProductManager {
         int hight;
         Product left;
         Product right;
+        Product(){
+
+        }
 
         public Product(int ID, String name, float price, int quantity) {
             this.ID = ID;
@@ -20,10 +36,7 @@ public class ProductManager {
         }
     }
 
-    static ArrayList<Product> productManagers=new ArrayList<>();
 
-    Product product;
-    static int containerCapacity;
 
     public void addAProduct(int ID,String name,float price, int quantity)
     {
@@ -40,32 +53,29 @@ public class ProductManager {
         }
 
         containerCapacity=bell;
+        newProductCreated=null;
         product=innerAddingProduct(product,ID,name,price,quantity);
-        productManagers.add(product);
+        if(newProductCreated!=null)
+        productManagers.add(newProductCreated);
     }
-    private Product innerAddingProduct(Product p,int ID,String name,float price, int quantity)
+    private Product innerAddingProduct(Product p, int ID, String name, float price, int quantity)
     {
+        if (p == null) {
+            newProductCreated = new Product(ID, name, price, quantity); // نحفظ العنصر الجديد
+            return newProductCreated;
+        }
 
-        if(p==null)
-            return new Product(ID,name,price,quantity);
-        else if(ID<p.ID)
-            p.left=innerAddingProduct(p.left, ID, name, price,  quantity);
-        else if(ID>p.ID)
-            p.right=innerAddingProduct(p.right,ID,name,price,quantity);
-        else
-            System.out.println("you have this product");
+        if (ID < p.ID) {
+            p.left = innerAddingProduct(p.left, ID, name, price, quantity);
+        } else if (ID > p.ID) {
+            p.right = innerAddingProduct(p.right, ID, name, price, quantity);
+        } else {
+            System.out.println("You already have this product.");
+        }
+
         return p;
     }
-    private int getHight(Product p)
-    {
-        if(p==null) return 0;
-        return p.hight;
-    }
-    private int getBalance(Product p)
-    {
-        if (p==null) return 0;
-        return getHight(p.left)-getHight(p.right);
-    }
+
 
     public void balanceAdding(int ID,String name,float price, int quantity)
     {
@@ -75,9 +85,21 @@ public class ProductManager {
             System.out.println("over full container or Inavilable price !!!!");
             return;
         }
+
         containerCapacity=bell;
         product=innerBalanceAdding(product,ID,name,price,quantity);
     }
+
+    private int getHight(Product p) {
+        if (p == null) return 0;
+        return p.hight;
+    }
+
+    private int getBalance(Product p) {
+        if (p == null) return 0;
+        return getHight(p.left) - getHight(p.right);
+    }
+
     private Product leftRotation(Product p)
     {
         Product newRoot=p.right;

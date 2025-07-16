@@ -2,7 +2,17 @@
 import java.util.ArrayList;
 
 public class PriorityOrder {
-    public class Order{
+
+
+    static ArrayList <Order>orders= new ArrayList<Order>();
+    Order order;
+
+    PriorityOrder(){
+    addOrder(3224,3);
+    addOrder(7655,6);
+    addOrder(8776,9);
+    }
+    public  static class Order{
         int orderID;
         int priority;
 
@@ -17,17 +27,17 @@ public class PriorityOrder {
 
     }
 
-    static ArrayList <Order>orders=new ArrayList<>();
 /// ////////////////////////////////////////////////////////////////////////// ///
 
-    public void addOrder(Order order)
+    public void addOrder(int id,int priority)
     {
-        if (order.priority < 1 || order.priority > 10) {
+        if (priority < 1) {
             System.out.println("Invalid priority! Please make it between 1 and 10.");
             return;
         }
-        orders.add(order);
-        Heapify_Up(orders.size()-1);
+            order=new Order(id,priority);
+            orders.add(order);
+            Heapify_Up(orders.size() - 1);
 
     }
 
@@ -140,4 +150,5 @@ public class PriorityOrder {
         return total;
 
     }
+
 }

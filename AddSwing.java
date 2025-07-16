@@ -29,6 +29,7 @@ public class AddSwing {
         panel2.add(titleButton);
         panel2.add(Box.createVerticalStrut(40));
 
+       // ProductManager .Product product=new ProductManager.Product();
         JLabel label1 = new JLabel("ID:");
         label1.setFont(labelFont);
         label1.setForeground(labelColor);
@@ -38,6 +39,9 @@ public class AddSwing {
         textField1.setMaximumSize(fieldSize);
         textField1.setAlignmentX(Component.CENTER_ALIGNMENT);
         textField1.setEnabled(false);
+
+
+
 
         panel2.add(label1);
         panel2.add(textField1);
@@ -52,6 +56,7 @@ public class AddSwing {
         textField2.setMaximumSize(fieldSize);
         textField2.setAlignmentX(Component.CENTER_ALIGNMENT);
         textField2.setEnabled(false);
+       // String name=textField2.getText();
 
         panel2.add(label2);
         panel2.add(textField2);
@@ -66,6 +71,7 @@ public class AddSwing {
         textField3.setMaximumSize(fieldSize);
         textField3.setAlignmentX(Component.CENTER_ALIGNMENT);
         textField3.setEnabled(false);
+        // float price=Float.parseFloat(textField3.getText());
 
         panel2.add(label3);
         panel2.add(textField3);
@@ -81,9 +87,26 @@ public class AddSwing {
         textField4.setMaximumSize(fieldSize);
         textField4.setAlignmentX(Component.CENTER_ALIGNMENT);
         textField4.setEnabled(false);
+       // int quantity =Integer.parseInt(textField4.getText());
 
         panel2.add(label4);
         panel2.add(textField4);
+        panel2.add(Box.createRigidArea(new Dimension(0, 20)));
+
+
+        JButton save=new JButton("SAVE");
+        save.setAlignmentX(Component.CENTER_ALIGNMENT);
+        save.setFont(new Font("Arial", Font.BOLD, 20));
+        save.addActionListener(d->{
+            int id=Integer.parseInt(textField1.getText());
+            String name=textField2.getText();
+            float price=Float.parseFloat(textField3.getText());
+            int quantity=Integer.parseInt(textField4.getText());
+            ProductManager .Product product=new ProductManager.Product(id,name,price,quantity);
+            ProductManager.productManagers.add(product);
+
+        });
+        panel2.add(save);
 
 // ///////////////////////////////////////////////////////////////////////////////////////////////////
         JPanel panel3 = new JPanel();
@@ -132,6 +155,17 @@ public class AddSwing {
 
         panel3.add(label8);
         panel3.add(textField12);
+
+        JButton save1=new JButton("SAVE");
+        save1.setAlignmentX(Component.CENTER_ALIGNMENT);
+        save1.setFont(new Font("Arial", Font.BOLD, 20));
+        save1.addActionListener(d->{
+            int idOrder=Integer.parseInt(textField11.getText());
+            int priority=Integer.parseInt(textField12.getText());
+            PriorityOrder.Order order=new PriorityOrder.Order(idOrder,priority);
+            PriorityOrder.orders.add(order);
+                });
+        panel3.add(save1);
 
 
 // //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -206,6 +240,18 @@ public class AddSwing {
 
         panel4.add(labelo);
         panel4.add(textField10);
+        JButton save2 =new JButton("SAVE");
+        save2.setAlignmentX(Component.CENTER_ALIGNMENT);
+        save2.setFont(new Font("Arial", Font.BOLD, 20));
+        save2.addActionListener(e->{
+            int idShip=Integer.parseInt(textField7.getText());
+            String dest=textField8.getText();
+            int cost=Integer.parseInt(textField9.getText());
+            String date=textField10.getText();
+            ShipmentManegment.Shipment shipment=new ShipmentManegment.Shipment(idShip,dest,cost,date);
+            ShipmentManegment.shipments.add(shipment);
+        });
+        panel4.add(save2);
 
 
         titleButton.addActionListener(d -> {
