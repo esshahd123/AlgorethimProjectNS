@@ -79,16 +79,20 @@ public class ProductManager {
 
     public void balanceAdding(int ID,String name,float price, int quantity)
     {
-        int bell=containerCapacity+quantity;
-        if(bell>1000 || price<0)
-        {
-            System.out.println("over full container or Inavilable price !!!!");
+        int bell = containerCapacity + quantity;
+        if (bell > 1000 || price < 0) {
+            System.out.println("Over full container or invalid price!");
             return;
         }
 
-        containerCapacity=bell;
-        product=innerBalanceAdding(product,ID,name,price,quantity);
+        containerCapacity = bell;
+        newProductCreated = null; // مهم
+        product = innerBalanceAdding(product, ID, name, price, quantity);
+
+        if (newProductCreated != null)
+            productManagers.add(newProductCreated);
     }
+
 
     private int getHight(Product p) {
         if (p == null) return 0;
@@ -121,29 +125,41 @@ public class ProductManager {
 
         return newRoot;
     }
-    private Product innerBalanceAdding(Product p,int ID,String name,float price, int quantity)
+    private Product innerBalanceAdding(Product p, int ID, String name, float price, int quantity)
     {
-        if(p==null) return new Product(ID,name,price,quantity);
-        else if(ID<p.ID) p.left=innerBalanceAdding(p.left,ID,name,price,quantity);
-        else p.right=innerBalanceAdding(p.right,ID,name,price,quantity);
-        p.hight=1+Math.max(getHight(p.right),getHight(p.left));
-        int factor=getBalance(p);
-        if(factor>1 && ID<p.ID)
-            return leftRotation(p);
-        if(factor<-1 && ID>p.ID)
+        if (p == null) {
+            newProductCreated = new Product(ID, name, price, quantity); // نحفظ العقدة الجديدة
+            return newProductCreated;
+        }
+
+        if (ID < p.ID)
+            p.left = innerBalanceAdding(p.left, ID, name, price, quantity);
+        else if (ID > p.ID)
+            p.right = innerBalanceAdding(p.right, ID, name, price, quantity);
+        else {
+            System.out.println("You already have this product.");
+            return p;
+        }
+
+        p.hight = 1 + Math.max(getHight(p.left), getHight(p.right));
+        int factor = getBalance(p);
+
+        if (factor > 1 && ID < p.left.ID)
             return rightRotation(p);
-        if(factor>1 && ID>p.ID )
-        {
-            p.left=leftRotation(p);
+        if (factor < -1 && ID > p.right.ID)
+            return leftRotation(p);
+        if (factor > 1 && ID > p.left.ID) {
+            p.left = leftRotation(p.left);
             return rightRotation(p);
         }
-        if(factor<-1 && ID<p.ID)
-        {
-            p.right=rightRotation(p);
+        if (factor < -1 && ID < p.right.ID) {
+            p.right = rightRotation(p.right);
             return leftRotation(p);
         }
+
         return p;
     }
+
 
 
     public void searchProduct(int id)
@@ -202,45 +218,62 @@ public class ProductManager {
 
     public void delateProduct(int id)
     {
-        int bell=containerCapacity-innerSearching(product,id).quantity;
-        if(bell<0)
-        {
-            System.out.println("No such quantity yo delete!!!!");
-            return ;
+        Product target = innerSearching(product, id);
+        if (target == null) {
+            System.out.println("Product not found.");
+            return;
         }
-        containerCapacity=bell;
-        product=innerDelation(product,id);
+
+        int bell = containerCapacity - target.quantity;
+        if (bell < 0) {
+            System.out.println("Invalid quantity to delete!");
+            return;
+        }
+
+        containerCapacity = bell;
+
+        productManagers.removeIf(p -> p.ID == id);
+
+        product = innerDelation(product, id);
     }
+
     private Product findTheNextID(Product p)
     {
-        if(p.left!=null)
+        if (p.left != null)
             return findTheNextID(p.left);
         return p;
     }
-    private Product innerDelation(Product p,int id)
-    {
-        if(p==null)
-            return null;
-        if(id<p.ID)
-            p.left=innerDelation(p.left,id);
-        else if( id>p.ID)
-            p.right=innerDelation(p.right,id);
-        else
-        {
-            if(p.left==null)
-                return p.right;
-            if (p.right==null)
-                return p.left;
-            Product nextProduct=findTheNextID(p.right);
-            p.ID=nextProduct.ID;
-            p.price=nextProduct.price;
-            p.name=nextProduct.name;
-            p.quantity=nextProduct.quantity;
 
-            p.right=innerDelation(p.right,p.ID);
+
+
+    private Product innerDelation(Product p, int id)
+    {
+        if (p == null)
+            return null;
+
+        if (id < p.ID) {
+            p.left = innerDelation(p.left, id);
+        } else if (id > p.ID) {
+            p.right = innerDelation(p.right, id);
+        } else {
+            if (p.left == null)
+                return p.right;
+            if (p.right == null)
+                return p.left;
+
+            Product nextProduct = findTheNextID(p.right);
+            int nextID = nextProduct.ID;
+
+            p.ID = nextProduct.ID;
+            p.price = nextProduct.price;
+            p.name = nextProduct.name;
+            p.quantity = nextProduct.quantity;
+
+            p.right = innerDelation(p.right, nextID);
         }
-        return p ;
+        return p;
     }
+
     public void showProduct()
     {
         innerPrintProduct(product);

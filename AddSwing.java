@@ -102,8 +102,9 @@ public class AddSwing {
             String name=textField2.getText();
             float price=Float.parseFloat(textField3.getText());
             int quantity=Integer.parseInt(textField4.getText());
-            ProductManager .Product product=new ProductManager.Product(id,name,price,quantity);
-            ProductManager.productManagers.add(product);
+            ProductManager manager = new ProductManager();
+            manager.addAProduct(id, name, price, quantity);
+
 
         });
         panel2.add(save);
@@ -162,8 +163,8 @@ public class AddSwing {
         save1.addActionListener(d->{
             int idOrder=Integer.parseInt(textField11.getText());
             int priority=Integer.parseInt(textField12.getText());
-            PriorityOrder.Order order=new PriorityOrder.Order(idOrder,priority);
-            PriorityOrder.orders.add(order);
+            PriorityOrder order=new PriorityOrder();
+            order.addOrder(idOrder,priority);
                 });
         panel3.add(save1);
 
@@ -248,8 +249,8 @@ public class AddSwing {
             String dest=textField8.getText();
             int cost=Integer.parseInt(textField9.getText());
             String date=textField10.getText();
-            ShipmentManegment.Shipment shipment=new ShipmentManegment.Shipment(idShip,dest,cost,date);
-            ShipmentManegment.shipments.add(shipment);
+            ShipmentManegment shipment=new ShipmentManegment();
+            shipment.addShipment(idShip,dest,cost,date);
         });
         panel4.add(save2);
 
