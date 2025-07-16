@@ -2,7 +2,6 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ShipmentManegment {
 
@@ -34,7 +33,7 @@ public class ShipmentManegment {
         }
     }
 
-    Shipment shipment;
+   static Shipment shipment;
 
     /// /////////////////////////////////////////////////////////////// ///
 
@@ -77,7 +76,7 @@ public class ShipmentManegment {
     }
 
 
-    public void Shipment_search(int ID)
+   static public Shipment Shipment_search(int ID)
     {
         Shipment s=Inner_search(shipment,ID);
         if(s!=null)
@@ -91,9 +90,11 @@ public class ShipmentManegment {
             System.out.println("No such ID like "+ID+" !!!!");
         }
 
+
+        return s;
     }
 
-    private Shipment Inner_search(Shipment shipment, int ID)
+  static   private Shipment Inner_search(Shipment shipment, int ID)
     {
         if(shipment!=null)
         {

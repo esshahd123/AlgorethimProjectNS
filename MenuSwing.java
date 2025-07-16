@@ -61,7 +61,27 @@ public class MenuSwing {
 
             JTable table = new JTable(data, columnNames);
             table.getTableHeader().setReorderingAllowed(false);
-            productFrame.add(new JScrollPane(table));
+
+            JScrollPane scrollPane = new JScrollPane(table);
+            productFrame.add(scrollPane, BorderLayout.CENTER);
+
+            JButton updateBtn = new JButton("Update Selected Product");
+            updateBtn.addActionListener(ae -> {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow == -1) {
+                    JOptionPane.showMessageDialog(productFrame, "Please select a product.");
+                    return;
+                }
+                int id = (int) table.getValueAt(selectedRow, 0);
+                new ProductUpdateFrame(id, table, selectedRow);  // فتح نافذة التحديث
+            });
+
+            JPanel bottomPanel = new JPanel();
+            bottomPanel.add(updateBtn);
+
+            productFrame.add(bottomPanel, BorderLayout.SOUTH);
+
+
             productFrame.setVisible(true);
         });
 
@@ -83,8 +103,26 @@ public class MenuSwing {
             }
 
             JTable table = new JTable(data, columnNames);
-            ShipmentFrame.add(new JScrollPane(table));
+            JScrollPane scrollPane = new JScrollPane(table);
+            ShipmentFrame.add(scrollPane, BorderLayout.CENTER);
             table.getTableHeader().setReorderingAllowed(false);
+
+            JButton updateBtn = new JButton("Update Delivery Date");
+            updateBtn.addActionListener(ae -> {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow == -1) {
+                    JOptionPane.showMessageDialog(ShipmentFrame, "Please select a shipment.");
+                    return;
+                }
+
+                int id = (int) table.getValueAt(selectedRow, 0);
+                new ShipmentUpdateFrame(id, table, selectedRow);
+            });
+
+            JPanel bottomPanel = new JPanel();
+            bottomPanel.add(updateBtn);
+            ShipmentFrame.add(bottomPanel, BorderLayout.SOUTH);
+
             ShipmentFrame.setVisible(true);
         });
 
@@ -106,7 +144,25 @@ public class MenuSwing {
 
             JTable table = new JTable(data, columnNames);
             table.getTableHeader().setReorderingAllowed(false);
-            OrderFrame.add(new JScrollPane(table));
+            JScrollPane scrollPane = new JScrollPane(table);
+            OrderFrame.add(scrollPane, BorderLayout.CENTER);
+
+            JButton updateBtn = new JButton("Update Priority");
+            updateBtn.addActionListener(ae -> {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow == -1) {
+                    JOptionPane.showMessageDialog(OrderFrame, "Please select an order.");
+                    return;
+                }
+
+                int id = (int) table.getValueAt(selectedRow, 0);
+                new OrderUpdateFrame(id, table, selectedRow);
+            });
+
+            JPanel bottomPanel = new JPanel();
+            bottomPanel.add(updateBtn);
+            OrderFrame.add(bottomPanel, BorderLayout.SOUTH);
+
             OrderFrame.setVisible(true);
         });
 

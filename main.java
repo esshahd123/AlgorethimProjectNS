@@ -1,8 +1,14 @@
+import javax.swing.*;
+import java.awt.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class main {
 
-    static void addship(){
 
-    }
+
+
+
     public static void main(String [] args)
     {
         ShipmentManegment shipmentManegment=new ShipmentManegment();
@@ -14,6 +20,7 @@ public class main {
 
 
         new  WelcomeSwing();
+       // productManager.showProduct();
        // new AddSwing();
     }
 }

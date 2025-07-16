@@ -4,7 +4,7 @@ public class ProductManager {
 
     static ArrayList<Product> productManagers=new ArrayList<>();
     private Product newProductCreated = null;
-    Product product;
+    static Product product;
     static int containerCapacity;
     ProductManager(){
         addAProduct(9,"milk",76,33);
@@ -162,17 +162,18 @@ public class ProductManager {
 
 
 
-    public void searchProduct(int id)
+   static public Product searchProduct(int id)
     {
         Product p=innerSearching(product,id);
         if(p!=null)
             System.out.println("Product founded.");
         else
             System.out.println("No such ID like "+id+" !!!!");
+        return p;
     }
 
 
-    private Product innerSearching(Product p,int id)
+   static private Product innerSearching(Product p,int id)
     {
         if(p!=null)
         {
