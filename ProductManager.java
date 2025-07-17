@@ -87,10 +87,10 @@ public class ProductManager {
         p=innerSearching(product,id);
         if (p!=null && p.ID==id)
         {
-            if (!productManagers.stream().anyMatch(prod->prod.ID==id))
-            {
+
+
                 System.out.println("THIS PRODUCT IS ALREADY EXIST !!!!!");
-            }
+
             return;
         }
             int bell=containerCapacity+quantity;
