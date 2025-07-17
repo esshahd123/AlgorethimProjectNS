@@ -26,9 +26,7 @@ public class ProductManager {
         int hight;
         Product left;
         Product right;
-        Product(){
-
-        }
+        Product(){}
 
         public Product(int ID, String name, float price, int quantity) {
             this.ID = ID;
@@ -63,18 +61,15 @@ public class ProductManager {
             }
 
             containerCapacity=bell;
-            newProductCreated =null;
             product = innerAddingProduct(product,id, name,price, quantity);
-            if (newProductCreated !=null)
-                productManagers.add(newProductCreated);
+                productManagers.add(new Product(id, name,price, quantity));
             return;
         }
 
     private Product innerAddingProduct(Product p,int ID,String name, float price,int quantity)
     {
         if (p == null) {
-            newProductCreated =new Product(ID,name,price,quantity);
-            return newProductCreated;
+            return new Product(ID,name,price,quantity);
         }
 
         if (ID <p.ID) {
@@ -308,9 +303,10 @@ public class ProductManager {
         return calculateInventory(product);
     }
 
-    private float calculateInventory(Product p) {
+    private float calculateInventory(Product p)
+    {
         if (p == null) return 0;
-        return (p.price * p.quantity) + calculateInventory(p.left) + calculateInventory(p.right);
+        return (p.price * p.quantity)+calculateInventory(p.left)+calculateInventory(p.right);
     }
 
 }
