@@ -7,11 +7,14 @@ public class ShipmentManegment {
 
     private Shipment newNodeCreated = null;
     static ArrayList<Shipment> shipments = new ArrayList<>();
+    static boolean write=true;
     public ShipmentManegment() {
-
-        addShipment(1111, "damas", 2300, "2\\9\\2025");
-        addShipment(1114, "Aleppo", 1250, "2\\10\\2025");
-        addShipment(1112, "Hama", 3000, "3\\8\\2025");
+        if(write) {
+            addShipment(1111, "damas", 2300, "2\\9\\2025");
+            addShipment(1114, "Aleppo", 1250, "2\\10\\2025");
+            addShipment(1112, "Hama", 3000, "3\\8\\2025");
+        }
+        write=false;
     }
     public static class Shipment{
         int shipmentID;
@@ -39,6 +42,12 @@ public class ShipmentManegment {
 
     public void addShipment(int ID, String destination, float cost, String deliveryDate)
     {
+        Shipment s=Inner_search(shipment,ID);
+        if(s!=null && s.shipmentID==ID)
+        {
+            System.out.println("THIS SHIPMENT IS ALREADY EXSIST!!!");
+            return;
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d\\M\\yyyy");
         LocalDate delivery = LocalDate.parse(deliveryDate,formatter);
         if (delivery.isBefore(LocalDate.now())) {
@@ -51,19 +60,18 @@ public class ShipmentManegment {
         }
 
 
-        newNodeCreated = null;
         shipment = innerAddShipment(shipment, ID, destination, cost, deliveryDate);
 
 
-        if (newNodeCreated != null)
-            shipments.add(newNodeCreated);
+       // if (newNodeCreated != null)
+            shipments.add(new Shipment(ID, destination, cost, deliveryDate));
     }
 
     private Shipment innerAddShipment(Shipment node, int ID, String destination, float cost, String deliveryDate)
     {
         if (node == null) {
-            newNodeCreated = new Shipment(ID, destination, cost, deliveryDate);
-            return newNodeCreated;
+            return new Shipment(ID, destination, cost, deliveryDate);
+
         }
         if (ID < node.shipmentID) {
             node.left = innerAddShipment(node.left, ID, destination, cost, deliveryDate);
@@ -71,6 +79,7 @@ public class ShipmentManegment {
             node.right = innerAddShipment(node.right, ID, destination, cost, deliveryDate);
         } else {
             System.out.println("Shipment with ID " + ID + " already exists.");
+
         }
         return node;
     }

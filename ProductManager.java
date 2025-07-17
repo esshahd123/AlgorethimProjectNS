@@ -6,12 +6,16 @@ public class ProductManager {
     private Product newProductCreated = null;
     static Product product;
     static int containerCapacity;
+    static boolean write=true;
     ProductManager(){
-        addAProduct(9,"milk",76,33);
-        addAProduct(8,"orange",55,44);
-        addAProduct(7,"chair",788,36);
-        addAProduct(10,"bread",33,27);
-        addAProduct(11,"table",900,75);
+        if(write) {
+            addAProduct(9, "milk", 76, 33);
+            addAProduct(8, "orange", 55, 44);
+            addAProduct(7, "chair", 788, 36);
+            addAProduct(10, "bread", 33, 27);
+            addAProduct(11, "table", 900, 75);
+        }
+        write=false;
     }
 
     public static class Product {
@@ -38,60 +42,81 @@ public class ProductManager {
 
 
 
-    public void addAProduct(int ID,String name,float price, int quantity)
+    public void addAProduct(int id,String name,float price, int quantity)
     {
-        int bell= containerCapacity+quantity;
-
-        if(price <= 0 || price > 10000 )
+        Product p=new Product();
+        p=innerSearching(product,id);
+        if(p!=null && p.ID==id)
         {
-            System.out.println("Invalid price! Please make it between 0 and 1000000.");
+            System.out.println("THIS PRODUCT IS ALREADY EXIST !!!!!");
             return;
         }
-        if(quantity < 0 || quantity > 1000 || (bell > 1000)) {
-            System.out.println("Invalid quantity! Exceeds warehouse capacity.");
+            int bell =containerCapacity+quantity;
+
+            if (price<=0 || price >10000) {
+                System.out.println("Invalid price! Please make it between 0 and 1000000.");
+                return;
+            }
+            if (quantity< 0|| quantity >1000 || (bell> 1000)) {
+                System.out.println("Invalid quantity! Exceeds warehouse capacity.");
+                return;
+            }
+
+            containerCapacity= bell;
+            newProductCreated =null;
+            product = innerAddingProduct(product,id, name,price, quantity);
+            if (newProductCreated != null)
+                productManagers.add(newProductCreated);
+
             return;
         }
 
-        containerCapacity=bell;
-        newProductCreated=null;
-        product=innerAddingProduct(product,ID,name,price,quantity);
-        if(newProductCreated!=null)
-        productManagers.add(newProductCreated);
-    }
+
+
     private Product innerAddingProduct(Product p, int ID, String name, float price, int quantity)
     {
         if (p == null) {
-            newProductCreated = new Product(ID, name, price, quantity); // نحفظ العنصر الجديد
+            newProductCreated =new Product(ID,name,price,quantity);
             return newProductCreated;
         }
 
-        if (ID < p.ID) {
+        if (ID <p.ID) {
             p.left = innerAddingProduct(p.left, ID, name, price, quantity);
-        } else if (ID > p.ID) {
-            p.right = innerAddingProduct(p.right, ID, name, price, quantity);
-        } else {
-            System.out.println("You already have this product.");
+        } else if (ID >p.ID) {
+            p.right =innerAddingProduct(p.right,ID, name,price, quantity);
         }
-
         return p;
     }
 
 
-    public void balanceAdding(int ID,String name,float price, int quantity)
+    public void balanceAdding(int id,String name,float price, int quantity)
     {
-        int bell = containerCapacity + quantity;
-        if (bell > 1000 || price < 0) {
-            System.out.println("Over full container or invalid price!");
+        Product p=new Product();
+        p=innerSearching(product,id);
+        if (p!=null && p.ID==id)
+        {
+            if (!productManagers.stream().anyMatch(prod->prod.ID==id))
+            {
+                System.out.println("THIS PRODUCT IS ALREADY EXIST !!!!!");
+            }
+            return;
+        }
+            int bell = containerCapacity + quantity;
+            if (bell > 1000 || price < 0) {
+                System.out.println("Over full container or invalid price!");
+                return;
+            }
+
+            containerCapacity = bell;
+            newProductCreated = null; // مهم
+            product = innerBalanceAdding(product, id, name, price, quantity);
+
+            if (newProductCreated != null)
+                productManagers.add(newProductCreated);
             return;
         }
 
-        containerCapacity = bell;
-        newProductCreated = null; // مهم
-        product = innerBalanceAdding(product, ID, name, price, quantity);
 
-        if (newProductCreated != null)
-            productManagers.add(newProductCreated);
-    }
 
 
     private int getHight(Product p) {
@@ -137,7 +162,7 @@ public class ProductManager {
         else if (ID > p.ID)
             p.right = innerBalanceAdding(p.right, ID, name, price, quantity);
         else {
-            System.out.println("You already have this product.");
+           // System.out.println("You already have this product.");
             return p;
         }
 
@@ -180,8 +205,9 @@ public class ProductManager {
             if(p.ID==id) return p;
             else if(id<p.ID)
                 return  innerSearching(p.left,id);
-            else
+            else if(id>p.ID)
                 return  innerSearching(p.right,id);
+            else return p;
         }
         return null;
     }

@@ -5,7 +5,8 @@ public class PriorityOrder {
 
 
     static ArrayList <Order>orders= new ArrayList<Order>();
-    Order order;
+    Order order=null;
+
 
     PriorityOrder(){
     addOrder(3224,3);
@@ -16,6 +17,7 @@ public class PriorityOrder {
         int orderID;
         int priority;
 
+        public Order(){}
         public Order(int orderID, int priority) {
             this.orderID = orderID;
             this.priority = priority;
@@ -35,6 +37,9 @@ public class PriorityOrder {
             System.out.println("Invalid priority! Please make it between 1 and 10.");
             return;
         }
+        for(Order ord:orders)
+            if(ord.orderID==id)
+                return ;
             order=new Order(id,priority);
             orders.add(order);
             Heapify_Up(orders.size() - 1);

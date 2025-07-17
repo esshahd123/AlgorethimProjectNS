@@ -133,7 +133,6 @@ public class MenuSwing {
 
             String[] columnNames = {"ID", "Order Priority"};
             Object[][] data = new Object[PriorityOrder.orders.size()][4];
-
             Collections.sort(PriorityOrder.orders,  Comparator.comparingInt(s -> s.priority));
             for (int i = 0; i < PriorityOrder.orders.size(); i++) {
                 PriorityOrder.Order order = PriorityOrder.orders.get(i);
