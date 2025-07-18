@@ -140,7 +140,7 @@ public class ProductManager {
     private Product innerBalanceAdding(Product p,int ID,String name,float price,int quantity)
     {
         if (p==null) {
-           return new Product(ID,name ,price,quantity); // نحفظ العقدة الجديدة
+           return new Product(ID,name ,price,quantity);
         }
 
         if (ID<p.ID)
@@ -148,7 +148,6 @@ public class ProductManager {
         else if (ID>p.ID)
             p.right =innerBalanceAdding(p.right,ID,name,price, quantity);
         else {
-           // System.out.println("You already have this product.");
             return p;
         }
 

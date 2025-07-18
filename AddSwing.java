@@ -164,7 +164,7 @@ public class AddSwing {
             int idOrder=Integer.parseInt(textField11.getText());
             int priority=Integer.parseInt(textField12.getText());
             PriorityOrder order=new PriorityOrder();
-            order.addOrder(idOrder,priority);
+           // order.addOrder(idOrder,priority);
                 });
         panel3.add(save1);
 
