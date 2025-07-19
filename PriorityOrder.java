@@ -50,7 +50,7 @@ public class PriorityOrder {
                 right = null;
             }
         }
-        public void addAProduct(int id,String name,float price, int quantity)
+        public static void addAProduct(int id,String name,float price, int quantity)
         {
             Product p=innerSearching(product,id);
 
@@ -76,7 +76,7 @@ public class PriorityOrder {
             return;
         }
 
-        private Product innerAddingProduct(Product p, int ID, String name, float price, int quantity)
+        private static Product innerAddingProduct(Product p, int ID, String name, float price, int quantity)
         {
             if (p == null) {
                 return new Product(ID,name,price,quantity);
@@ -180,7 +180,7 @@ public class PriorityOrder {
 
 
 
-        static public Product searchProduct(int id)
+         public Product searchProduct(int id)
         {
             Product p=innerSearching(product,id);
             if(p!=null)
@@ -340,17 +340,17 @@ public class PriorityOrder {
 
 /// ////////////////////////////////////////////////////////////////////////// ///
 Scanner in=new Scanner(System.in);
-    public void addOrder(int id,int priority,int numberOfProduct)
+    public Order addOrder(int id, int priority, int numberOfProduct)
     {
         if (priority < 1) {
             System.out.println("Invalid priority! Please make it between 1 and 10.");
-            return;
+            return null;
         }
         for(Order ord:orders)
             if(ord.orderID==id)
             {
                 System.out.println("This order is already exist!!!!");
-                return ;
+                return ord;
             }
 
 
@@ -372,7 +372,7 @@ Scanner in=new Scanner(System.in);
             }
 
 
-
+        return order;
     }
 
     public Order mostPriority()
@@ -477,7 +477,7 @@ Scanner in=new Scanner(System.in);
         orders.set(index,orders.get(midindex));
         orders.set(midindex,temp);
     }
-    public float totalCostOfOrders()
+    static public float totalCostOfOrders()
     {
         int total=0;
         for(Order ord:orders)

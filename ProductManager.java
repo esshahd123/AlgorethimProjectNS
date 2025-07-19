@@ -40,30 +40,30 @@ public class ProductManager {
 
 
 
-    public void addAProduct(int id,String name,float price, int quantity)
+    public Product addAProduct(int id, String name, float price, int quantity)
     {
         Product p=innerSearching(product,id);
 
         if(p!=null && p.ID==id)
         {
             System.out.println("THIS PRODUCT IS ALREADY EXIST !!!!!");
-            return;
+            return p;
         }
             int bell =containerCapacity+quantity;
 
             if (price<=0 || price >10000) {
                 System.out.println("Invalid price! Please make it between 0 and 1000000.");
-                return;
+                return p;
             }
             if (quantity< 0|| quantity >1000 || (bell> 1000)) {
                 System.out.println("Invalid quantity! Exceeds warehouse capacity.");
-                return;
+                return p;
             }
 
             containerCapacity=bell;
             product = innerAddingProduct(product,id, name,price, quantity);
                 productManagers.add(new Product(id, name,price, quantity));
-            return;
+        return p;
         }
 
     private Product innerAddingProduct(Product p,int ID,String name, float price,int quantity)
@@ -227,25 +227,24 @@ public class ProductManager {
             System.out.println("No such operation !!!");
     }
 
-    public void delateProduct(int id)
+    public Product delateProduct(int id)
     {
         Product target =innerSearching(product, id);
         if (target ==null) {
             System.out.println("Product not found.");
-            return;
+            return null;
         }
 
         int bell = containerCapacity-target.quantity;
         if (bell<0) {
             System.out.println("Invalid quantity to delete!");
-            return;
+            return null;
         }
 
         containerCapacity=bell;
 
-        productManagers.removeIf(p ->p.ID ==id);
-
         product = innerDelation(product,id);
+        return product;
     }
 
     private Product findTheNextID(Product p)

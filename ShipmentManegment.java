@@ -526,24 +526,26 @@ public class ShipmentManegment {
    static Shipment shipment;
 
     /// /////////////////////////////////////////////////////////////// ///
+    ///
+    /// @return
 
-    public void addShipment(int ID, String destination, float cost, String deliveryDate)
+    public Shipment addShipment(int ID, String destination, float cost, String deliveryDate)
     {
         Shipment s=Inner_search(shipment,ID);
         if(s!=null && s.shipmentID==ID)
         {
             System.out.println("THIS SHIPMENT IS ALREADY EXSIST!!!");
-            return;
+            return s;
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d\\M\\yyyy");
         LocalDate delivery = LocalDate.parse(deliveryDate,formatter);
         if (delivery.isBefore(LocalDate.now())) {
             System.out.println("Invalid delivery date! Cannot be in the past.");
-            return;
+            return s;
         }
         if(cost<=0 || cost>1000000){
             System.out.println("invalide cost ! Please make it between 0 and 1000000.");
-            return;
+            return s;
         }
 
 
@@ -552,6 +554,7 @@ public class ShipmentManegment {
 
        // if (newNodeCreated != null)
             shipments.add(new Shipment(ID, destination, cost, deliveryDate));
+        return shipment;
     }
 
     private Shipment innerAddShipment(Shipment node, int ID, String destination, float cost, String deliveryDate)
@@ -572,7 +575,7 @@ public class ShipmentManegment {
     }
 
 
-   static public Shipment Shipment_search(int ID)
+    public Shipment Shipment_search(int ID)
     {
         Shipment s=Inner_search(shipment,ID);
         if(s!=null)
@@ -641,12 +644,12 @@ public class ShipmentManegment {
         }
     }
 
-    public void printHighCostShipments(float threshold) {
+   static public void printHighCostShipments(float threshold) {
         System.out.println("Shipments with cost higher than " + threshold + ":");
         recursiveHighCost(shipment, threshold);
     }
 
-    private void recursiveHighCost(Shipment s, float threshold) {
+   static private void recursiveHighCost(Shipment s, float threshold) {
         if (s == null) return;
         recursiveHighCost(s.left, threshold);
         if (s.cost > threshold) {
